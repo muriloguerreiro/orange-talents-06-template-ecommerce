@@ -37,8 +37,13 @@ public class Usuario {
 	@Column(nullable = false)
 	private LocalDateTime instanteCriacao;
 
+	@Deprecated
+	public Usuario() {
+	}
+
 	/**
 	 * Método construtor da classe Usuario
+	 * 
 	 * @param login é obrigatório e deve estar no formato de email.
 	 * @param senha é obrigatória, mínimo de 6 caracteres e deve ser recebida limpa.
 	 */
