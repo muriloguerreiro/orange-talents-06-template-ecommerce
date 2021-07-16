@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import br.com.zupacademy.murilo.mercadolivre.caracteristica.CadastroCaracteristicaForm;
 import br.com.zupacademy.murilo.mercadolivre.caracteristica.Caracteristica;
 import br.com.zupacademy.murilo.mercadolivre.categoria.Categoria;
+import br.com.zupacademy.murilo.mercadolivre.imagem.Imagem;
 import br.com.zupacademy.murilo.mercadolivre.usuario.Usuario;
 
 @Entity
@@ -56,6 +57,9 @@ public class Produto {
     
     @NotNull
 	private LocalDateTime instanteCadastro;
+    
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private Set<Imagem> imagens = new HashSet<>();
 
     @Deprecated
     private Produto(){
@@ -72,5 +76,23 @@ public class Produto {
 		this.usuarioDono = usuarioDono;
 		this.categoria = categoria;
 		this.instanteCadastro = LocalDateTime.now();
+	}
+	
+	/**
+	 * Método que verifica se o produto pertence ao usuario informado.
+	 * @param usuario autenticado deve ser o usuario dono do produto.
+	 */
+	
+	public boolean pertenceAoUsuario(Usuario usuario) {
+		return this.usuarioDono.equals(usuario);
+	}
+	
+	/**
+	 * Método que associa os links das imagens ao Produto.
+	 * @param images deve ser um conjunto de no mínimo uma imagem.
+	 */
+	
+	public void adicionaImagens(Set<String> links) {
+		this.imagens.addAll(links.stream().map(link -> new Imagem(link, this)).collect(Collectors.toSet()));
 	}
 }
