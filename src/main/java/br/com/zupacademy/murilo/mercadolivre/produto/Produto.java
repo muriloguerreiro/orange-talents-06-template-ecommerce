@@ -22,6 +22,7 @@ import br.com.zupacademy.murilo.mercadolivre.caracteristica.CadastroCaracteristi
 import br.com.zupacademy.murilo.mercadolivre.caracteristica.Caracteristica;
 import br.com.zupacademy.murilo.mercadolivre.categoria.Categoria;
 import br.com.zupacademy.murilo.mercadolivre.imagem.Imagem;
+import br.com.zupacademy.murilo.mercadolivre.opiniao.Opiniao;
 import br.com.zupacademy.murilo.mercadolivre.usuario.Usuario;
 
 @Entity
@@ -60,6 +61,9 @@ public class Produto {
     
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private Set<Imagem> imagens = new HashSet<>();
+    
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Opiniao> opinioes = new HashSet<>();
 
     @Deprecated
     private Produto(){
@@ -95,4 +99,13 @@ public class Produto {
 	public void adicionaImagens(Set<String> links) {
 		this.imagens.addAll(links.stream().map(link -> new Imagem(link, this)).collect(Collectors.toSet()));
 	}
+	
+	/**
+	 * Método que adiciona uma opiniao à lista de opinioes sobre um Produto.
+	 * @param opinioes deve ser uma lista de opinioes.
+	 */
+	
+	public void adicionaOpiniao(Opiniao opiniao){
+        this.opinioes.add(opiniao);
+    }
 }
