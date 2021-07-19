@@ -23,6 +23,7 @@ import br.com.zupacademy.murilo.mercadolivre.caracteristica.Caracteristica;
 import br.com.zupacademy.murilo.mercadolivre.categoria.Categoria;
 import br.com.zupacademy.murilo.mercadolivre.imagem.Imagem;
 import br.com.zupacademy.murilo.mercadolivre.opiniao.Opiniao;
+import br.com.zupacademy.murilo.mercadolivre.pergunta.Pergunta;
 import br.com.zupacademy.murilo.mercadolivre.usuario.Usuario;
 
 @Entity
@@ -64,6 +65,9 @@ public class Produto {
     
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private Set<Opiniao> opinioes = new HashSet<>();
+    
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Pergunta> perguntas = new HashSet<>();
 
     @Deprecated
     private Produto(){
@@ -108,4 +112,13 @@ public class Produto {
 	public void adicionaOpiniao(Opiniao opiniao){
         this.opinioes.add(opiniao);
     }
+
+	/**
+	 * Método que adiciona uma pergunta à lista de perguntas sobre um Produto.
+	 * @param perguntas deve ser uma lista de perguntas.
+	 */
+	
+	public void adicionaPergunta(Pergunta pergunta) {
+		this.perguntas.add(pergunta);
+	}
 }
