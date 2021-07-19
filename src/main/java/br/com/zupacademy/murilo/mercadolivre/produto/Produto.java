@@ -3,6 +3,7 @@ package br.com.zupacademy.murilo.mercadolivre.produto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,10 @@ import javax.validation.constraints.Size;
 import br.com.zupacademy.murilo.mercadolivre.caracteristica.CadastroCaracteristicaForm;
 import br.com.zupacademy.murilo.mercadolivre.caracteristica.Caracteristica;
 import br.com.zupacademy.murilo.mercadolivre.categoria.Categoria;
+import br.com.zupacademy.murilo.mercadolivre.detalhe.CaracteristicaDto;
+import br.com.zupacademy.murilo.mercadolivre.detalhe.ImagemDto;
+import br.com.zupacademy.murilo.mercadolivre.detalhe.OpiniaoDto;
+import br.com.zupacademy.murilo.mercadolivre.detalhe.PerguntaDto;
 import br.com.zupacademy.murilo.mercadolivre.imagem.Imagem;
 import br.com.zupacademy.murilo.mercadolivre.opiniao.Opiniao;
 import br.com.zupacademy.murilo.mercadolivre.pergunta.Pergunta;
@@ -86,6 +91,58 @@ public class Produto {
 		this.instanteCadastro = LocalDateTime.now();
 	}
 	
+	public String getNome() {
+		return nome;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public Integer getQuantidadeDisponivel() {
+		return quantidadeDisponivel;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public String getCategoriaNome() {
+		return categoria.getNome();
+	}
+	
+	public Double getMediaNotas() {
+		List<Integer> notas = opinioes.stream().map(opiniao -> opiniao.getNota()).collect(Collectors.toList());
+		
+		Integer somaNotas = 0;
+		for (Integer nota : notas) {
+			somaNotas += nota;
+		}
+		
+		return somaNotas/(double) getTotalNotas();
+	}
+	
+	public Integer getTotalNotas() {
+		Integer totalNotas = opinioes.size();
+		return totalNotas;
+	}
+	
+	public Set<CaracteristicaDto> getCaracteristicasDto() {
+		return caracteristicas.stream().map(caracteristica -> new CaracteristicaDto(caracteristica)).collect(Collectors.toSet());
+	}
+	
+	public Set<ImagemDto> getImagensDto() {
+		return imagens.stream().map(imagem -> new ImagemDto(imagem)).collect(Collectors.toSet());
+	}
+	
+	public Set<OpiniaoDto> getOpinioesDto() {
+		return opinioes.stream().map(opiniao -> new OpiniaoDto(opiniao)).collect(Collectors.toSet());
+	}
+	
+	public Set<PerguntaDto> getPerguntasDto() {
+		return perguntas.stream().map(pergunta -> new PerguntaDto(pergunta)).collect(Collectors.toSet());
+	}
+
 	/**
 	 * Método que verifica se o produto pertence ao usuario informado.
 	 * @param usuario autenticado deve ser o usuario dono do produto.
@@ -121,4 +178,5 @@ public class Produto {
 	public void adicionaPergunta(Pergunta pergunta) {
 		this.perguntas.add(pergunta);
 	}
+
 }

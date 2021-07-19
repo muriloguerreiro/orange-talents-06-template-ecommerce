@@ -46,8 +46,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+		.antMatchers(HttpMethod.GET, "/produtos/**").permitAll()
 		.antMatchers(HttpMethod.POST, "/usuarios").permitAll()
-		//.antMatchers(HttpMethod.POST, "/categorias").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.anyRequest().authenticated()
 		.and().csrf().disable()
